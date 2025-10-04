@@ -7,14 +7,23 @@ async function main() {
     
     const client = new Perplexity();
 
-    const search = await client.search.create({
-      query: "",
-      max_results: 3,
-      max_tokens_per_page: 50
+    const completion = await client.chat.completions.create
+    ({
+      messages: [
+                  {
+                    role: "user",
+                    content: "What is 2 + 2?",
+                  }
+                ],
+      model: "sonar",
     });
-    
-    for (const result of search.results) {
-        console.log(`- ${result.title}: ${result.url}`);
+
+    const messageContent = completion.choices?.[0]?.message?.content;
+
+    if (messageContent) {
+      console.log(`Response: ${messageContent}`);
+    } else {
+      console.log("No response choice or content was received from the API.");
     }
 }
 
