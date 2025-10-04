@@ -7,24 +7,20 @@ async function main() {
     
     const client = new Perplexity();
 
-    const completion = await client.chat.completions.create
-    ({
-      messages: [
-                  {
-                    role: "user",
-                    content: "What is 2 + 2?",
-                  }
-                ],
+    const stream = await client.chat.completions.create({
       model: "sonar",
+      messages: [{ role: "user", content: "Create a TODO application" }],
+      stream: true
     });
 
-    const messageContent = completion.choices?.[0]?.message?.content;
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content;
 
-    if (messageContent) {
-      console.log(`Response: ${messageContent}`);
-    } else {
-      console.log("No response choice or content was received from the API.");
+      if (typeof content === 'string') {
+        process.stdout.write(content);
+      }
     }
+    console.log();
 }
 
 main();
