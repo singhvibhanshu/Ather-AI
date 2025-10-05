@@ -9,7 +9,10 @@ async function main() {
 
     const stream = await client.chat.completions.create({
       model: "sonar",
-      messages: [{ role: "user", content: "Create a TODO application" }],
+      messages: [{ role: "user", content: ""} ,
+        { role: "user", content: ""} ,
+        { role: "user", content: "Create a TODO application"
+       }],
       stream: true
     });
 
